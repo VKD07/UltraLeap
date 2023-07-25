@@ -32,10 +32,9 @@ public class LineGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
         AdjustLineWidth();
-
-        RayCast();
+        DrawLine(point.position);
+       // RayCast();
     }
 
     private void DrawLine(Vector3 pos)
@@ -89,7 +88,7 @@ public class LineGenerator : MonoBehaviour
         drawings.Clear();
     }
 
-    public void Undo()
+    public void ChangeColor()
     {
         lineMaterial.color = Color.red;
     }
