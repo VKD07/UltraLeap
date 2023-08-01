@@ -10,6 +10,7 @@ public class CreateAnObject : MonoBehaviour
     [SerializeField] bool createObject;
     [SerializeField] Transform objectSpawnPoint;
     [SerializeField] PrimitiveType typeOfObj;
+    [SerializeField] GameObject objectToCreate;
 
     [Header("Materials")]
     [SerializeField] Material wireFrameMat;
@@ -28,6 +29,7 @@ public class CreateAnObject : MonoBehaviour
         {
             creatingObj = true;
             createdObj = GameObject.CreatePrimitive(typeOfObj);
+           // createdObj = Instantiate(objectToCreate);
             createdObj.AddComponent<Rigidbody>();
             createdObj.AddComponent<InteractionBehaviour>();
             createdObj.GetComponent<Rigidbody>().isKinematic = true;
