@@ -22,10 +22,11 @@ public class ObjectCreation : MonoBehaviour
     [SerializeField] Material wireFrameMat;
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material redMaterial;
+    [SerializeField] Material blueMaterial;
     Material createdObjMat;
     GameObject createdObj;
-    float randomDistance;
     bool creatingObj;
+    bool colorChosen;
 
     void Update()
     {
@@ -37,14 +38,13 @@ public class ObjectCreation : MonoBehaviour
         if (pinchLeft && pinchRight && fingerDistance > 0.10f && !creatingObj)
         {
             creatingObj = true;
-            createdObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            createdObj.AddComponent<Rigidbody>();
-            //  createdObj.AddComponent<InteractionBehaviour>();
-            randomDistance = Random.Range(20f, 70f);
-            createdObj.AddComponent<CreatedObjectScript>();
-            createdObj.GetComponent<CreatedObjectScript>().distanceFromTheSun = randomDistance;
-            createdObj.GetComponent<Rigidbody>().isKinematic = true;
-            createdObj.GetComponent<MeshRenderer>().material = wireFrameMat;
+            createdObj = Instantiate(objectToCreate);
+            //createdObj.AddComponent<Rigidbody>();
+            //createdObj.AddComponent<InteractionBehaviour>();
+            //createdObj.AddComponent<CreatedObjectScript>();
+            createdObj.GetComponent<CreatedObjectScript>().distanceFromTheSun = Random.Range(20f, 70f);
+            createdObj.GetComponent<CreatedObjectScript>().rotationSpeed = Random.Range(20, 50f);
+            //createdObj.GetComponent<Rigidbody>().isKinematic = true;
         }
     }
     private void ResizeTheObject()
@@ -54,6 +54,7 @@ public class ObjectCreation : MonoBehaviour
         {
             createdObj.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance) * sizeIncreaseRate;
             createdObj.transform.position = objectSpawnPoint.position;
+            createdObj.GetComponent<MeshRenderer>().material = wireFrameMat;
         }
     }
 
@@ -69,6 +70,10 @@ public class ObjectCreation : MonoBehaviour
 
     public void CreatingObject(bool value)
     {
+        if (!colorChosen)
+        {
+            createdObjMat = defaultMaterial;
+        }
         createdObj.GetComponent<MeshRenderer>().material = createdObjMat;
         createdObj = null;
         creatingObj = value;
@@ -76,11 +81,18 @@ public class ObjectCreation : MonoBehaviour
 
     public void ChangeColorDefault()
     {
+        colorChosen = true;
         createdObjMat = defaultMaterial;
     }
     public void ChangeColorRed()
     {
+        colorChosen = true;
         createdObjMat = redMaterial;
     }
 
+    public void BlueColor()
+    {
+        colorChosen = true;
+        createdObjMat = blueMaterial;
+    }
 }
